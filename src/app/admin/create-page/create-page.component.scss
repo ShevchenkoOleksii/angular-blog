@@ -1,0 +1,14 @@
+input {
+  outline: none;
+}
+
+input:focus {
+  border: 1px solid black;
+}
+
+form {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+
