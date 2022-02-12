@@ -1,19 +1,52 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AuthService} from "../shared/services/auth.service";
+import {PostsService} from "../../shared/posts.service";
+import {Post} from "../../shared/interfaces";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-dashboard-page',
   templateUrl: './dashboard-page.component.html',
   styleUrls: ['./dashboard-page.component.scss']
 })
-export class DashboardPageComponent implements OnInit {
+export class DashboardPageComponent implements OnInit, OnDestroy {
 
-  constructor(private auth: AuthService) { }
+  posts: Post[] = []
+  pSub: Subscription = new Subscription
+  dSub: Subscription = new Subscription
+  searchStr: string = ''
+
+
+  constructor(
+    private auth: AuthService,
+    private postService: PostsService
+  ) { }
 
   ngOnInit(): void {
+    this.postService.getAll().subscribe(posts => {
+      this.posts = posts
+    })
   }
 
   test() {
     console.log(this.auth.token)
+  }
+
+
+
+  remove(id: string) {
+    this.dSub = this.postService.remove(id).subscribe(() => {
+      this.posts = this.posts.filter(post => post.id !== id)
+    })
+  }
+
+  ngOnDestroy(): void {
+    if(this.pSub) {
+      this.pSub.unsubscribe()
+    }
+
+    if(this.dSub) {
+      this.dSub.unsubscribe()
+    }
   }
 }

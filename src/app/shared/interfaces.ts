@@ -10,9 +10,13 @@ export interface FbAuthResponse {
 }
 
 export interface Post {
-  id?: string
+  id?: string | any
   title: string
   text: string
   author: string
   date: Date
+}
+
+export interface FbCreateResponse {
+  name: string | any
 }

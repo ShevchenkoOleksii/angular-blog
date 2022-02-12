@@ -23,7 +23,9 @@ export class LoginPageComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe((params: Params) => {
       if(params['loginAgain']) {
-        this.message = 'Please, enter the data'
+        this.message = 'Please, enter the data!'
+      } else if(params['authFailed']) {
+        this.message = 'Session over. Enter your data again!'
       }
     })
 
@@ -40,7 +42,7 @@ export class LoginPageComponent implements OnInit {
   }
 
   submit() {
-    console.log(this.form)
+    // console.log(this.form)
     if (this.form.invalid) {
       return
     }
